@@ -27,79 +27,79 @@ flp = Argos.FullSpaceEvaluator(datafile)</code></pre><pre class="documenter-exam
 Argos.update!(flp, x)
 # The values in the cache are modified accordingly
 [stack.vmag stack.vang]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">9×2 Matrix{Float64}:
- 0.142239  0.0
- 0.404763  0.106699
- 0.532857  0.346569
- 0.160177  0.0369417
- 0.48837   0.981163
- 0.800667  0.184118
- 0.061045  0.0375052
- 0.95921   0.516469
- 0.339201  0.659443</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Every time we have a new variable <code>x</code>, it is important to refresh the cache by calling explicitly <code>Argos.update!(flp, x)</code> before calling the other callbacks.</p></div></div><h3 id="Callbacks"><a class="docs-heading-anchor" href="#Callbacks">Callbacks</a><a id="Callbacks-1"></a><a class="docs-heading-anchor-permalink" href="#Callbacks" title="Permalink"></a></h3><p>Now the cache has been refreshed by calling <a href="../../lib/api/#Argos.update!"><code>update!</code></a>, one can query the different callbacks to evaluate the objective, the constraints and the derivatives:</p><p><strong>Objective:</strong></p><pre><code class="language-julia hljs">obj = Argos.objective(flp, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">1654.4047606519825</code></pre><p><strong>Gradient:</strong></p><pre><code class="language-julia hljs">g = zeros(n)
+ 0.472255  0.0
+ 0.154     0.497948
+ 0.917838  0.200268
+ 0.673999  0.905357
+ 0.715554  0.906742
+ 0.773077  0.874105
+ 0.829149  0.175047
+ 0.498802  0.525633
+ 0.741585  0.375063</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Every time we have a new variable <code>x</code>, it is important to refresh the cache by calling explicitly <code>Argos.update!(flp, x)</code> before calling the other callbacks.</p></div></div><h3 id="Callbacks"><a class="docs-heading-anchor" href="#Callbacks">Callbacks</a><a id="Callbacks-1"></a><a class="docs-heading-anchor-permalink" href="#Callbacks" title="Permalink"></a></h3><p>Now the cache has been refreshed by calling <a href="../../lib/api/#Argos.update!"><code>update!</code></a>, one can query the different callbacks to evaluate the objective, the constraints and the derivatives:</p><p><strong>Objective:</strong></p><pre><code class="language-julia hljs">obj = Argos.objective(flp, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">20935.71012416406</code></pre><p><strong>Gradient:</strong></p><pre><code class="language-julia hljs">g = zeros(n)
 Argos.gradient!(flp, g, x)
 g</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">19-element Vector{Float64}:
-    0.0
-    0.0
- -184.93401274298736
-    0.0
-    0.0
-    0.0
-    0.0
-    0.0
-  -42.67085754558347
-    0.0
-    0.0
-    0.0
-    0.0
-    0.0
-  -48.05213422111513
-    0.0
-    0.0
- 1404.6989929122046
-  108.52665933682286</code></pre><p><strong>Constraints:</strong></p><pre><code class="language-julia hljs">cons = zeros(m)
+     0.0
+     0.0
+ 30922.715390701997
+     0.0
+     0.0
+     0.0
+     0.0
+     0.0
+ 58455.73261201109
+     0.0
+     0.0
+     0.0
+     0.0
+     0.0
+ 83427.65253804649
+     0.0
+     0.0
+  1595.9992470059583
+  1557.407317957884</code></pre><p><strong>Constraints:</strong></p><pre><code class="language-julia hljs">cons = zeros(m)
 Argos.constraint!(flp, cons, x)
 cons</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">36-element Vector{Float64}:
-  -3.2305695623051376
-   1.1740585104240575
-  -1.08351366058642
-   3.4586140431727435
-  -1.5145082101461762
-   0.4309331560257059
-   4.681589597112874
-   1.745616011648999
-  -0.2147565499503885
-   1.5873717455436913
-   ⋮
-   0.002728706161787491
-   4.626961140009997
-   6.477822576385542
-  15.48666381633485
-   0.19858638472251847
- 141.89674502312064
-  15.589412630266786
-   1.7156124245936646
-   0.18442976667341254</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>All the callbacks are written to modify the data (constraints, gradient) inplace, to avoid unneeded allocations. In addition, <code>Argos.jl</code> provides a version allocating automatically the return values:</p><pre><code class="language-julia hljs">g = Argos.gradient(flp, x)
+ -0.9022570625871893
+ -8.150442460655334
+  7.250722378098773
+  1.0132614022617235
+ 11.671488116596842
+ -4.270524325003335
+  1.9466387008505932
+ -1.6341931713769504
+  4.028830821432271
+  0.2276301354820598
+  ⋮
+ 38.92154281572035
+  0.07752428146165248
+  0.029551813401417583
+ 57.62964405966
+ 19.935521227062793
+  7.626998740643536
+  0.7221682709418943
+  1.184623316539198
+  8.805626079581588</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>All the callbacks are written to modify the data (constraints, gradient) inplace, to avoid unneeded allocations. In addition, <code>Argos.jl</code> provides a version allocating automatically the return values:</p><pre><code class="language-julia hljs">g = Argos.gradient(flp, x)
 c = Argos.constraint(flp, x)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">36-element Vector{Float64}:
-  -3.2305695623051376
-   1.1740585104240575
-  -1.08351366058642
-   3.4586140431727435
-  -1.5145082101461762
-   0.4309331560257059
-   4.681589597112874
-   1.745616011648999
-  -0.2147565499503885
-   1.5873717455436913
-   ⋮
-   0.002728706161787491
-   4.626961140009997
-   6.477822576385542
-  15.48666381633485
-   0.19858638472251847
- 141.89674502312064
-  15.589412630266786
-   1.7156124245936646
-   0.18442976667341254</code></pre></div></div><p>Eventually, one can reset the evaluator to its original state by using <a href="../../lib/api/#Argos.reset!"><code>reset!</code></a>:</p><pre><code class="language-julia hljs">Argos.reset!(flp)
+ -0.9022570625871893
+ -8.150442460655334
+  7.250722378098773
+  1.0132614022617235
+ 11.671488116596842
+ -4.270524325003335
+  1.9466387008505932
+ -1.6341931713769504
+  4.028830821432271
+  0.2276301354820598
+  ⋮
+ 38.92154281572035
+  0.07752428146165248
+  0.029551813401417583
+ 57.62964405966
+ 19.935521227062793
+  7.626998740643536
+  0.7221682709418943
+  1.184623316539198
+  8.805626079581588</code></pre></div></div><p>Eventually, one can reset the evaluator to its original state by using <a href="../../lib/api/#Argos.reset!"><code>reset!</code></a>:</p><pre><code class="language-julia hljs">Argos.reset!(flp)
 [stack.vmag stack.vang]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">9×2 Matrix{Float64}:
  1.0  0.0
  1.0  0.0
@@ -109,4 +109,4 @@ c = Argos.constraint(flp, x)</code></pre><pre class="documenter-example-output">
  1.0  0.0
  1.0  0.0
  1.0  0.0
- 1.0  0.0</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../quickstart/cuda/">« Argos on NVIDIA GPU</a><a class="docs-footer-nextpage" href="../fullspace/">Full-space OPF »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Sunday 11 August 2024 01:54">Sunday 11 August 2024</span>. Using Julia version 1.9.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 1.0  0.0</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../quickstart/cuda/">« Argos on NVIDIA GPU</a><a class="docs-footer-nextpage" href="../fullspace/">Full-space OPF »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Sunday 18 August 2024 01:53">Sunday 18 August 2024</span>. Using Julia version 1.9.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
